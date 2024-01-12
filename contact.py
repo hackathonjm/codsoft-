@@ -2,6 +2,8 @@ class ContactBook:
     def __init__(self):
         self.contacts = {}
 
+
+    
     def add_contact(self, name, phone_number, email, address):
         self.contacts[name] = {'Phone Number': phone_number, 'Email': email, 'Address': address}
         print(f"Contact {name} added successfully!")
@@ -34,6 +36,8 @@ class ContactBook:
             print(f"Contact {name} deleted successfully!")
         else:
             print(f"Contact {name} not found.")
+
+
 
 def main():
     contact_book = ContactBook()
@@ -85,6 +89,8 @@ def main():
 
         else:
             print("Invalid choice. Please enter a number between 1 and 6.")
+
+
 
 if __name__ == "__main__":
     main()
