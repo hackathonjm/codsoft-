@@ -1,42 +1,48 @@
-import secrets
-import string 
+import tkinter as tk
 
+def on_click(button_value):
+    current_text = entry.get()
+    entry.delete(0, tk.END)
+    entry.insert(tk.END, current_text + str(button_value))
 
-def generate_password(length=12, include_uppercase=True, include_digits=True, include_symbols=True):
-    characters = string.ascii_lowercase
-    if include_uppercase:
-        characters += string.ascii_uppercase
-    if include_digits:
-        characters += string.digits
-    if include_symbols:
-        characters += string.punctuation
+def clear_entry():
+    entry.delete(0, tk.END)
 
-    if length < 1:
-        raise ValueError("Password length must be at least 1.")
-
-    password = ''.join(secrets.choice(characters) for _ in range(length))
-    return password
-
-
-
-def main():
+def calculate():
     try:
-        length = int(input("Enter the length of the password: "))
-    except ValueError:
-        print("Please enter a valid integer.")
-        return
+        result = eval(entry.get())
+        entry.delete(0, tk.END)
+        entry.insert(tk.END, str(result))
+    except Exception as e:
+        entry.delete(0, tk.END)
+        entry.insert(tk.END, "Error")
 
-    include_uppercase = input("Include uppercase letters? (y/n): ").lower() == 'y'
-    include_digits = input("Include digits? (y/n): ").lower() == 'y'
-    include_symbols = input("Include symbols? (y/n): ").lower() == 'y'
+# Create the main window
+window = tk.Tk()
+window.title("Simple Calculator")
 
-    try:
-        password = generate_password(length, include_uppercase, include_digits, include_symbols)
-        print(f"Generated password: {password}")
-    except ValueError as e:
-        print(f"Error: {e}")
+# Entry widget to display the input and results
+entry = tk.Entry(window, width=20, font=("Arial", 16))
+entry.grid(row=0, column=0, columnspan=4)
 
+# Buttons for numbers and operations
+buttons = [
+    '7', '8', '9', '/',
+    '4', '5', '6', '*',
+    '1', '2', '3', '-',
+    '0', 'C', '=', '+'
+]
 
+row_val = 1
+col_val = 0
 
-if __name__ == "__main__":
-    main()
+for button_value in buttons:
+    tk.Button(window, text=button_value, width=5, height=2,
+              command=lambda value=button_value: on_click(value) if value != 'C' and value != '=' else clear_entry() if value == 'C' else calculate()).grid(row=row_val, column=col_val)
+    col_val += 1
+    if col_val > 3:
+        col_val = 0
+        row_val += 1
+
+# Run the application
+window.mainloop()
